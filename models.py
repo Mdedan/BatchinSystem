@@ -1,36 +1,32 @@
 from email.headerregistry import Address
 from sqlalchemy import Column, Integer, String
+from app import Desc
 from database import Base
 from pydantic import BaseModel
 
-class Truck(Base):
-    __tablename__ = "trucks"
-
+class Delivery(Base):
+    __tablename__ = "deliveries"
     id = Column(Integer, primary_key=True, index=True)
-    item = Column(String, index=True)
-    type = Column(String)
-    company = Column(String, index=True)
+    DNo = Column(String, index=True)
+    client = Column(String)
+    location= Column(String)
+    mix_label = Column(String)
+    Desc = Column(String)
 
+class DeliveryCreate(BaseModel):
+    DNo: str
+    client: str
+    location: str
+    mix_label: str
+    Desc: str
 
-class TruckCreate(BaseModel):
-    item: str
-    type: str
-    company: str
-
-class TruckResponse(BaseModel):
+class DeliveryResponse(BaseModel):
     id: int
-    item: str
-    type: str
-    company: str
-
+    DNo: str
+    client: str
+    location: str
+    mix_label: str
+    Desc: str
     class Config:
         from_attributes = True
 
-
-""" Table for Drivers
-    __tablename__ = "drivers"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    address = Column(String)
-"""

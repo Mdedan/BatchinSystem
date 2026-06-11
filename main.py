@@ -14,15 +14,16 @@ models.Base.metadata.create_all(bind=engine)
 def home():
     return {"status": "healthy", "message": "Backend is running!"}
 
-@app.post("/trucks", response_model=models.TruckResponse)  
-def create_truck(truck: models.TruckCreate, db: Session = Depends(get_db)):
-    new_truck = models.Truck(item=truck.item, type=truck.type, company=truck.company)
-    db.add(new_truck)
+@app.post("/deliveries", response_model=models.DeliveryResponse)
+def create_delivery(delivery: models.DeliveryCreate, db: Session = Depends(get_db)):
+    new_delivery = models.Delivery(DNo=delivery.DNo, client=delivery.client, location=delivery.location, mix_label=delivery.mix_label, Desc=delivery.Desc)
+    db.add(new_delivery)
     db.commit()
-    db.refresh(new_truck)
-    return new_truck
+    db.refresh(new_delivery)
+    return new_delivery
 
-@app.get("/trucks")
-def get_all_trucks(db: Session = Depends(get_db)):
-    return db.query(models.Truck).all()
+@app.get("/deliveries")
+def get_all_deliveries(db: Session = Depends(get_db)):
+    return db.query(models.Delivery).all()
+
 
