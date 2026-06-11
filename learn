@@ -1,0 +1,30 @@
+﻿"""
+st.header("➕ Create a New Truck")
+# Create text input boxes for the form layout
+item = st.text_input("Enter Item Name:", placeholder="e.g., Bananas")
+truck = st.text_input("Enter Truck Type:", placeholder="e.g., Refrigerated Semi")
+company = st.text_input("Enter Company Name:", placeholder="e.g., McOdsen Inc.")
+# ==========================================
+# --- SECTION 2: VIEW ALL TRUCKS ---
+# ==========================================
+st.header("📋 Current Trucks List")
+
+if st.button("Refresh Trucks List", use_container_width=True):
+    try:
+        # Send a GET request to our FastAPI server to fetch database rows
+        response = requests.get(f"{BACKEND_URL}/trucks", timeout=5)
+            
+        if response.status_code == 200:
+            trucks_data = response.json()
+            
+            if not trucks_data:
+                st.info("The database is currently empty. Add a truck above!")
+            else:
+                # Display the data cleanly as an interactive table
+                st.dataframe(trucks_data, use_container_width=True)
+        else:
+            st.error(f"Could not fetch trucks. Status code: {response.status_code}")
+    except Exception as e:
+        st.error("Could not fetch data from the backend.")
+        st.exception(e)
+"""
